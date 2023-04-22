@@ -36,3 +36,15 @@ export const insertLikes = async (
     `successfully inserted records of ${createMany.count} to likes table`
   );
 };
+
+export const insertRetweet = async (
+  data: Prisma.Enumerable<Prisma.RetweetCreateManyInput>
+): Promise<void> => {
+  const createMany = await prisma.retweet.createMany({
+    data,
+    skipDuplicates: true,
+  });
+  console.log(
+    `successfully inserted records of ${createMany.count} to retweet table`
+  );
+};

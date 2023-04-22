@@ -25,12 +25,22 @@
       </form>
       <% } %>
       <span data-test="like-count"><%= likeCount %></span>
-      <form data-test="form-retweet">
+
+      <% if(!hasRetweeted){ %>
+      <form action="/posts/<%= post.id %>/retweet" method="POST" data-test="form-retweet">
         <button type="submit" data-test="submit-retweet" class="retweet-btn">
           <span class="material-icons" data-test="retweet-icon">swap_horiz</span>
       </button>
       </form>
-      <span data-test="retweet-count">3</span>
+      <% } else { %>
+      <form action="/posts/<%= post.id %>/retweet?_method=DELETE" method="POST" data-test="form-retweet">
+        <button type="submit" data-test="submit-retweet" class="retweet-btn has-retweeted">
+          <span class="material-icons" data-test="retweet-icon">swap_horiz</span>
+      </button>
+      </form>
+      <% } %>
+      <span data-test="retweet-count"><%= RetweetCount %></span>
+
       <% if(post.user.id === currentUser.id) { %>
         <div class="post-menus">
           <a href="/posts/<%= post.id %>/edit" data-test="post-link-edit">Edit</a>

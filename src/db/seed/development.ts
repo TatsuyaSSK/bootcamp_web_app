@@ -1,4 +1,4 @@
-import {insertUsers, insertPosts, insertLikes} from "./index";
+import {insertUsers, insertPosts, insertLikes, insertRetweet} from "./index";
 
 const main = async (): Promise<void> => {
   await insertUsers([
@@ -98,6 +98,103 @@ const main = async (): Promise<void> => {
     },
   ]);
   await insertLikes([
+    {
+      userId: 1,
+      postId: 2,
+      createdAt: new Date("2021-06-15 11:08:17.693"),
+    },
+    {
+      userId: 1,
+      postId: 4,
+      createdAt: new Date("2021-06-23 02:55:59.682"),
+    },
+    {
+      userId: 1,
+      postId: 5,
+      createdAt: new Date("2021-06-23 02:56:19.331"),
+    },
+    {
+      userId: 1,
+      postId: 6,
+      createdAt: new Date("2021-06-23 02:56:26.741"),
+    },
+    {
+      userId: 2,
+      postId: 7,
+      createdAt: new Date("2021-06-23 02:57:59.387"),
+    },
+    {
+      userId: 2,
+      postId: 5,
+      createdAt: new Date("2021-06-23 02:58:05.392"),
+    },
+    {
+      userId: 2,
+      postId: 3,
+      createdAt: new Date("2021-06-23 02:58:14.214"),
+    },
+    {
+      userId: 2,
+      postId: 6,
+      createdAt: new Date("2021-06-23 02:58:19.997"),
+    },
+    {
+      userId: 3,
+      postId: 7,
+      createdAt: new Date("2021-06-23 02:58:47.299"),
+    },
+    {
+      userId: 3,
+      postId: 5,
+      createdAt: new Date("2021-06-23 02:58:59.211"),
+    },
+    {
+      userId: 3,
+      postId: 3,
+      createdAt: new Date("2021-06-23 02:59:08.061"),
+    },
+    {
+      userId: 3,
+      postId: 1,
+      createdAt: new Date("2021-06-23 02:59:16.910"),
+    },
+    {
+      userId: 4,
+      postId: 7,
+      createdAt: new Date("2021-06-23 02:59:22.134"),
+    },
+    {
+      userId: 5,
+      postId: 7,
+      createdAt: new Date("2021-06-23 02:59:42.179"),
+    },
+    {
+      userId: 5,
+      postId: 4,
+      createdAt: new Date("2021-06-23 02:59:49.338"),
+    },
+    {
+      userId: 5,
+      postId: 6,
+      createdAt: new Date("2021-06-23 02:59:55.121"),
+    },
+    {
+      userId: 5,
+      postId: 3,
+      createdAt: new Date("2021-06-23 03:00:12.878"),
+    },
+    {
+      userId: 5,
+      postId: 1,
+      createdAt: new Date("2021-06-23 03:00:28.501"),
+    },
+    {
+      userId: 4,
+      postId: 7,
+      createdAt: new Date("2021-06-23 03:00:34.725"),
+    },
+  ]);
+  await insertRetweet([
     {
       userId: 1,
       postId: 2,

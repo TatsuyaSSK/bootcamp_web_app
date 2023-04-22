@@ -9,6 +9,7 @@ import {
   deletePost,
 } from "@/models/post";
 import {getPostLikedCount, hasUserLikedPost} from "@/models/like";
+import {getPostRetweetedCount, hasUserRetweetedPost} from "@/models/retweet";
 import {ensureAuthUser} from "@/middlewares/authentication";
 import {ensureOwnerOfPost} from "@/middlewares/current_user";
 export const postRouter = express.Router();
@@ -43,11 +44,17 @@ postRouter.get("/:postId", ensureAuthUser, async (req, res, next) => {
   }
   const likeCount = await getPostLikedCount(post.id);
   const hasLiked = await hasUserLikedPost(currentUserId, post.id);
+
+  const RetweetCount = await getPostRetweetedCount(post.id);
+  const hasRetweeted = await hasUserRetweetedPost(currentUserId, post.id);
+
   res.render("posts/show", {
     post,
     formatDate,
     likeCount,
     hasLiked,
+    RetweetCount,
+    hasRetweeted
   });
 });
 
