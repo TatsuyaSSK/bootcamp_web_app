@@ -124,7 +124,6 @@ export const getAllRetweetedPosts = async (): Promise<any> => {
       retweetUserName: retweetpost["user"]["name"],
     });
   }
-  console.log(result);
   return result;
 };
 

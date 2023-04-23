@@ -126,7 +126,6 @@ export const getUserWithPostsAndRetweetedPosts = async (
 ): Promise<any> => {
   const user = await getUserWithPosts(Number(userId));
   const retweetuser = await getUserRetweetedPosts(Number(userId));
-  // console.log(retweetuser)
 
   const userPosts = user?.posts;
   const userRetweetPosts = retweetuser?.retweets.map(x => x.post);

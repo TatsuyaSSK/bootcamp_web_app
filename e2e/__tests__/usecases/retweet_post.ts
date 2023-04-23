@@ -110,7 +110,6 @@ describe("Retweet post", () => {
         ).innerText.trim();
       }
     );
-    console.log(`newestContent: ${newestContent}`);
     const postLabel = await page.$eval("[data-test=posts-container]", el => {
       return (
         el.firstElementChild?.querySelector(
