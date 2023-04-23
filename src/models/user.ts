@@ -1,4 +1,4 @@
-import {User} from "@prisma/client";
+import {User, Post} from "@prisma/client";
 import {type PostWithUser} from "@/models/post";
 import {databaseManager} from "@/db/index";
 
@@ -75,6 +75,94 @@ export const getUserWithPosts = async (
   if (user === null) return null;
   return user;
 };
+
+export const getUserRetweetedPosts = async (
+  userId: number
+): Promise<
+  | (UserWithoutPassword & {
+    retweets: Array<{
+        post: PostWithUser;
+      }>;
+    })
+  | null
+> => {
+  const prisma = databaseManager.getInstance();
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      ...selectUserColumnsWithoutPassword,
+      retweets: {
+        orderBy: {
+            createdAt: "desc",
+        },
+        select: {
+          post: {
+            select: {
+              id: true,
+              content: true,
+              userId: true,
+              createdAt: true,
+              updatedAt: true,
+              user: {
+                select: {
+                  ...selectUserColumnsWithoutPassword,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  return user;
+};
+
+export const getUserWithPostsAndRetweetedPosts = async (
+  userId: number
+): Promise<any> => {
+  const user = await getUserWithPosts(Number(userId));
+  const retweetuser = await getUserRetweetedPosts(Number(userId));
+  console.log(retweetuser)
+
+  const userPosts = user?.posts
+  const userRetweetPosts = retweetuser?.retweets.map(x => x.post)
+
+  const userPostsAnduserRetweetPosts = [];
+
+  if (userPosts) {
+    for (const post of userPosts) {
+      userPostsAnduserRetweetPosts.push(
+        {
+          ...post,
+          "isRetweetedPost": false,
+          "retweetUserName": ""
+        }
+      )
+    }  
+  }
+  if (userRetweetPosts) {
+    for (const post of userRetweetPosts) {
+      userPostsAnduserRetweetPosts.push(
+        {
+          ...post,
+          "isRetweetedPost": true,
+          "retweetUserName": retweetuser?.name
+        }
+      )
+    }
+  }
+  userPostsAnduserRetweetPosts.sort((x, y) => {
+    if (x.createdAt < y.createdAt) return 1;
+    if (x.createdAt > y.createdAt) return -1;
+    return 0;
+  })
+
+  return userPostsAnduserRetweetPosts
+}
+
+
 
 export const getUserLikedPosts = async (
   userId: number

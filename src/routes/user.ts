@@ -7,6 +7,8 @@ import {
   createUser,
   getUserWithPosts,
   getUserLikedPosts,
+  getUserRetweetedPosts,
+  getUserWithPostsAndRetweetedPosts,
   getUser,
   updateUserProfile,
 } from "@/models/user";
@@ -62,9 +64,12 @@ userRouter.post(
 userRouter.get("/:userId", ensureAuthUser, async (req, res, next) => {
   const {userId} = req.params;
   const user = await getUserWithPosts(Number(userId));
+  const posts = await getUserWithPostsAndRetweetedPosts(Number(userId));
+  // console.log(posts)
   if (!user) return next(new Error("Invalid error: The user is undefined."));
   res.render("users/show", {
     user,
+    posts,
   });
 });
 
