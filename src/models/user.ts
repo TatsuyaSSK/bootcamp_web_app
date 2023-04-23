@@ -142,15 +142,6 @@ export const getUserWithPostsAndRetweetedPosts = async (
     }
   }
   if (userRetweetPosts && retweetuser) {
-    // for (const post of userRetweetPosts) {
-    //   userPostsAnduserRetweetPosts.push(
-    //     {
-    //       ...post,
-    //       "isRetweetedPost": true,
-    //       "retweetUserName": retweetuser?.name
-    //     }
-    //   )
-    // }
     for (let i = 0; i < userRetweetPosts.length; i++) {
       userPostsAnduserRetweetPosts.push({
         id: userRetweetPosts[i]["id"],
