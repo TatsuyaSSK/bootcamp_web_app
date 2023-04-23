@@ -16,6 +16,6 @@
         <a href="<%= `/users/${user.id}/likes` %>">Likes</a>
       </li>
     </ul>
-    <%- include('../_posts', {posts: user.like.map(likeItem=> likeItem.post)}); %>
+    <%- include('../_posts', {posts: user.likes.map(likeItem=> likeItem.post)}); %>
   </div>
 </div>
