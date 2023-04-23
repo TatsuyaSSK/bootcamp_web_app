@@ -3,6 +3,7 @@ import {body, validationResult} from "express-validator";
 import {formatDate} from "@/lib/convert_date";
 import {
   getAllPosts,
+  getAllPostsAndRetweetedPosts,
   getPost,
   createPost,
   updatePost,
@@ -15,9 +16,10 @@ import {ensureOwnerOfPost} from "@/middlewares/current_user";
 export const postRouter = express.Router();
 
 postRouter.get("/", ensureAuthUser, async (req, res) => {
-  const postsWithUser = await getAllPosts();
+  // const postsWithUser = await getAllPosts();
+  const allPostsAndRetweetedPosts = await getAllPostsAndRetweetedPosts();
   res.render("posts/index", {
-    posts: postsWithUser,
+    posts: allPostsAndRetweetedPosts,
   });
 });
 
