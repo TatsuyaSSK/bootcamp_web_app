@@ -81,6 +81,7 @@ export const getUserRetweetedPosts = async (
 ): Promise<
   | (UserWithoutPassword & {
     retweets: Array<{
+        createdAt: Date,
         post: PostWithUser;
       }>;
     })
@@ -98,6 +99,7 @@ export const getUserRetweetedPosts = async (
             createdAt: "desc",
         },
         select: {
+          createdAt: true,
           post: {
             select: {
               id: true,
@@ -124,7 +126,7 @@ export const getUserWithPostsAndRetweetedPosts = async (
 ): Promise<any> => {
   const user = await getUserWithPosts(Number(userId));
   const retweetuser = await getUserRetweetedPosts(Number(userId));
-  console.log(retweetuser)
+  // console.log(retweetuser)
 
   const userPosts = user?.posts
   const userRetweetPosts = retweetuser?.retweets.map(x => x.post)
@@ -142,15 +144,28 @@ export const getUserWithPostsAndRetweetedPosts = async (
       )
     }  
   }
-  if (userRetweetPosts) {
-    for (const post of userRetweetPosts) {
-      userPostsAnduserRetweetPosts.push(
-        {
-          ...post,
-          "isRetweetedPost": true,
-          "retweetUserName": retweetuser?.name
-        }
-      )
+  if (userRetweetPosts && retweetuser) {
+    // for (const post of userRetweetPosts) {
+    //   userPostsAnduserRetweetPosts.push(
+    //     {
+    //       ...post,
+    //       "isRetweetedPost": true,
+    //       "retweetUserName": retweetuser?.name
+    //     }
+    //   )
+    // }
+    for (let i = 0; i < userRetweetPosts.length; i++) {
+      userPostsAnduserRetweetPosts.push({
+        "id": userRetweetPosts[i]["id"],
+        "content": userRetweetPosts[i]["content"],
+        "userId": userRetweetPosts[i]["userId"],
+        // created_atをpostのcreated_atではなくretweetのcreated_atに書き換える
+        "createdAt": retweetuser.retweets[i].createdAt,
+        "updatedAt": userRetweetPosts[i]["updatedAt"],
+        "user": userRetweetPosts[i]["user"],
+        "isRetweetedPost": true,
+        "retweetUserName": retweetuser.name
+      })
     }
   }
   userPostsAnduserRetweetPosts.sort((x, y) => {
