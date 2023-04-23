@@ -115,44 +115,43 @@ export const getAllRetweetedPosts = async (): Promise<any> => {
   const result = [];
   for (const retweetpost of retweetPosts) {
     result.push({
-      "id": retweetpost["post"]["id"],
-      "content": retweetpost["post"]["content"],
-      "userId": retweetpost["post"]["userId"],
-      "createdAt": retweetpost.createdAt,
-      "updatedAt": retweetpost["post"]["updatedAt"],
-      "user": retweetpost["post"]["user"],
-      "retweetUserName": retweetpost["user"]["name"]
-    })
+      id: retweetpost["post"]["id"],
+      content: retweetpost["post"]["content"],
+      userId: retweetpost["post"]["userId"],
+      createdAt: retweetpost.createdAt,
+      updatedAt: retweetpost["post"]["updatedAt"],
+      user: retweetpost["post"]["user"],
+      retweetUserName: retweetpost["user"]["name"],
+    });
   }
-  console.log(result)
-  return result
-}
+  console.log(result);
+  return result;
+};
 
 export const getAllPostsAndRetweetedPosts = async (): Promise<any> => {
-  const allPosts = await getAllPosts()
-  const allRetweetedPosts = await getAllRetweetedPosts()
+  const allPosts = await getAllPosts();
+  const allRetweetedPosts = await getAllRetweetedPosts();
 
   const allPostsAndRetweetedPosts = [];
 
   for (const post of allPosts) {
     allPostsAndRetweetedPosts.push({
       ...post,
-      "retweetUserName": "",
-      "isRetweetedPost": false,
-    })
-  };
+      retweetUserName: "",
+      isRetweetedPost: false,
+    });
+  }
   for (const post of allRetweetedPosts) {
     allPostsAndRetweetedPosts.push({
       ...post,
-      "isRetweetedPost": true,
-    })
-  };
+      isRetweetedPost: true,
+    });
+  }
   allPostsAndRetweetedPosts.sort((x, y) => {
     if (x.createdAt < y.createdAt) return 1;
     if (x.createdAt > y.createdAt) return -1;
     return 0;
-  })
+  });
 
-  return allPostsAndRetweetedPosts
-}
-
+  return allPostsAndRetweetedPosts;
+};

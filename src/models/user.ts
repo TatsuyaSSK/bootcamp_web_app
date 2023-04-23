@@ -80,8 +80,8 @@ export const getUserRetweetedPosts = async (
   userId: number
 ): Promise<
   | (UserWithoutPassword & {
-    retweets: Array<{
-        createdAt: Date,
+      retweets: Array<{
+        createdAt: Date;
         post: PostWithUser;
       }>;
     })
@@ -96,7 +96,7 @@ export const getUserRetweetedPosts = async (
       ...selectUserColumnsWithoutPassword,
       retweets: {
         orderBy: {
-            createdAt: "desc",
+          createdAt: "desc",
         },
         select: {
           createdAt: true,
@@ -128,21 +128,19 @@ export const getUserWithPostsAndRetweetedPosts = async (
   const retweetuser = await getUserRetweetedPosts(Number(userId));
   // console.log(retweetuser)
 
-  const userPosts = user?.posts
-  const userRetweetPosts = retweetuser?.retweets.map(x => x.post)
+  const userPosts = user?.posts;
+  const userRetweetPosts = retweetuser?.retweets.map(x => x.post);
 
   const userPostsAnduserRetweetPosts = [];
 
   if (userPosts) {
     for (const post of userPosts) {
-      userPostsAnduserRetweetPosts.push(
-        {
-          ...post,
-          "isRetweetedPost": false,
-          "retweetUserName": ""
-        }
-      )
-    }  
+      userPostsAnduserRetweetPosts.push({
+        ...post,
+        isRetweetedPost: false,
+        retweetUserName: "",
+      });
+    }
   }
   if (userRetweetPosts && retweetuser) {
     // for (const post of userRetweetPosts) {
@@ -156,28 +154,26 @@ export const getUserWithPostsAndRetweetedPosts = async (
     // }
     for (let i = 0; i < userRetweetPosts.length; i++) {
       userPostsAnduserRetweetPosts.push({
-        "id": userRetweetPosts[i]["id"],
-        "content": userRetweetPosts[i]["content"],
-        "userId": userRetweetPosts[i]["userId"],
+        id: userRetweetPosts[i]["id"],
+        content: userRetweetPosts[i]["content"],
+        userId: userRetweetPosts[i]["userId"],
         // created_atをpostのcreated_atではなくretweetのcreated_atに書き換える
-        "createdAt": retweetuser.retweets[i].createdAt,
-        "updatedAt": userRetweetPosts[i]["updatedAt"],
-        "user": userRetweetPosts[i]["user"],
-        "isRetweetedPost": true,
-        "retweetUserName": retweetuser.name
-      })
+        createdAt: retweetuser.retweets[i].createdAt,
+        updatedAt: userRetweetPosts[i]["updatedAt"],
+        user: userRetweetPosts[i]["user"],
+        isRetweetedPost: true,
+        retweetUserName: retweetuser.name,
+      });
     }
   }
   userPostsAnduserRetweetPosts.sort((x, y) => {
     if (x.createdAt < y.createdAt) return 1;
     if (x.createdAt > y.createdAt) return -1;
     return 0;
-  })
+  });
 
-  return userPostsAnduserRetweetPosts
-}
-
-
+  return userPostsAnduserRetweetPosts;
+};
 
 export const getUserLikedPosts = async (
   userId: number
